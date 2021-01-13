@@ -1,0 +1,60 @@
+<div class="text-danger">
+<% if @book.errors.any? %>
+   <span class="h4"><%= @book.errors.count %>errors prohibited this obj from being saved:</span>
+  <% @book.errors.full_messages.each do |message| %><br>
+     ・<%= message %>
+  <% end %>
+<% end %>
+</div>
+<div class="container">
+ <div class="row">
+   <div class="col-md-3">
+    <h1>User info</h1>
+    <%= attachment_image_tag @user, :profile_image, :fill, 100, 100, format: 'jpeg', fallback: "no_image.jpg", size:'100x100' %>
+    <div class="pt-3 font-weight-bold border-top border-white-50 col-md-8">name<span class="offset-md-5"><%= @user.name %></span></div><br>
+    <div class="pt-3 font-weight-bold border-top border-white-50 col-md-8">introduction<span class="offset-md-1"><%= @user.introduction %></span></div>
+    <% if @user.id == current_user.id %>
+    <p class="mt-5"><%= link_to icon("fas", "user-cog"), edit_user_path(@user), class: 'btn btn-outline-secondary btn-sm w-75' %></p>
+    <% end %>
+    <h2>New book</h2>
+    <%= form_with model:@book, local:true do |f| %>
+    <p>Title</p>
+    <%= f.text_field :title, class: "col-md-9 text-secondary" %>
+    <p>Opinion</p>
+    <%= f.text_area :body, class: "col-md-9 text-secondary" %>
+
+    <br><%= f.submit class:"btn btn-success w-25" "Create Book" %></br>
+    <% end %>
+   </div>
+   <div class="col-md-8 offset-md-1">
+    <h1>Books</h1>
+   <table class="table table-hover">
+   <thead>
+    <tr>
+      <th></th>
+      <th>Title</th>
+      <th>Opnion</th>
+    </tr>
+   </thead>
+
+   <tbody>
+    <% @books.each do |book| %>
+    <tr>
+    <td>
+      <%= link_to (book.user) do %>
+      <span><%= attachment_image_tag book.user, :profile_image, :fill, 50, 50, format: 'jpeg', fallback: "no_image.jpg", size:'50x50' %></span>
+      <% end %>
+    </td>
+    <td>
+      <span><%= link_to book.title, book_path(book.id) %></sapn>
+    </td>
+    <td>
+      <span><%= book.body %></span>
+    </td>
+    <% end %>
+    </tr>
+   </tbody>
+   </table>
+   </div>
+ </div>
+</div>

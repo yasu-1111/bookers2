@@ -1,0 +1,48 @@
+<div class="container">
+  <div class="row">
+   <div class="col-md-3">
+    <h1>User info</h1>
+    <%= attachment_image_tag @book.user, :profile_image, :fill, 100, 100, format: 'jpeg', fallback: "no_image.jpg" %>
+    <div class="pt-3 font-weight-bold border-top border-white-50 col-md-8">name<span class="offset-md-5"><%= @book.user.name %></span></div><br>
+    <div class="pt-3 font-weight-bold border-top border-white-50 col-md-8">introduction<span class="offset-md-1"><%= @book.user.introduction %></span></div>
+    <p class="mt-5"><%= link_to icon("fas", "user-cog"), edit_user_path(@book.user), class: 'btn btn-outline-secondary btn-sm w-75' %></p>
+    <h2>New book</h2>
+    <%= form_with model:@book_new, local:true do |f| %>
+    <p>Title</p>
+    <%= f.text_field :title, class: "col-md-9 text-secondary" %>
+    <p>Opinion</p>
+    <%= f.text_area :body, class: "col-md-9 text-secondary" %>
+
+    <br><%= f.submit class:"btn btn-success w-25" "Create Book" %></br>
+    <% end %>
+   </div>
+  <div class="col-md-8 offset-md-1">
+    <h1>Book detail</h1>
+   <table class="table table-hover">
+    <tbody>
+    <td>
+      <%= link_to (@book.user) do %>
+      <span><%= attachment_image_tag @book.user, :profile_image, :fill, 50, 50, format: 'jpeg', fallback: "no_image.jpg", size:'50x50' %></span><br>
+      <% end %>
+      <span><%= link_to @book.user.name, user_path(@book.user)  %></span>
+
+    </td>
+    <td>
+      <span><%= link_to @book.title, book_path %></span>
+    </td>
+    <td>
+      <%= @book.body %>
+    </td>
+    <% if @book.user_id == current_user.id %>
+    <td>
+        <span class="btn btn-success btn-sm"><%= link_to "Edit", edit_book_path(@book.id), class: "text-white" %></span>
+    </td>
+    <td>
+        <span class="btn btn-danger btn-sm"><%= link_to "Destroy", book_path(@book.id), method: :delete, class: "text-white" %></span>
+    </td>
+    <% end %>
+    </tbody>
+   </table>
+  </div>
+ </div>
+</div>
